@@ -357,7 +357,7 @@ class RestServer
 		}
 		
 		// Check for trailing dot-format syntax like /controller/action.format -> action.json
-		if(preg_match('/\.(\w+)$/i', $_SERVER['REQUEST_URI'], &$matches)) {
+		if(preg_match('/\.(\w+)($|\?)/i', $_SERVER['REQUEST_URI'], &$matches)) {
 			$override = $matches[1];
 		}
 
@@ -472,7 +472,7 @@ class RestServer
 					}
 					break;
 				case '"':
-					if($c > 0 && $json[$c-1] != '\\') {
+					if(($c > 0 && $json[$c-1] != '\\') || $c == 0 ) {
 						$in_string = !$in_string;
 					}
 				default:
