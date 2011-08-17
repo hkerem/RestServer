@@ -345,7 +345,8 @@ class RestServer
 	
 	public function getFormat()
 	{
-		$format = RestFormat::PLAIN;
+		$format = RestFormat::JSON;
+		$override = NULL;
 		$accept_mod = preg_replace('/\s+/i', '', $_SERVER['HTTP_ACCEPT']); // ensures that exploding the HTTP_ACCEPT string does not get confused by whitespaces
 		$accept = explode(',', $accept_mod);
 
@@ -363,7 +364,7 @@ class RestServer
 
 		// Give GET parameters precedence before all other options to alter the format
 		$override = isset($_GET['format']) ? $_GET['format'] : $override;
-		if (isset(RestFormat::$formats[$override])) {
+		if ($override != NULL && isset(RestFormat::$formats[$override])) {
 			$format = RestFormat::$formats[$override];
 		} elseif (in_array(RestFormat::AMF, $accept)) {
 			$format = RestFormat::AMF;
